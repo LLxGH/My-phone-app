@@ -1,41 +1,81 @@
-import { Avatar, Button, Grid } from "@mui/material";
-import { blue, } from "@mui/material/colors";
+import { Avatar, Backdrop, Button, Fade, Grid, Modal, Paper, Typography } from "@mui/material";
+import { blue, green, grey, orange, red } from "@mui/material/colors";
 import { useState } from "react";
-import CallIcon from '@mui/icons-material/Call';
+import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
+import { Box } from "@mui/system";
+import BackspaceIcon from '@mui/icons-material/Backspace';
 
 export default function Dial() {
-    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+
+    const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
     const [display, setDisplay] = useState('');
+    const [isCalling, setIsCalling] = useState(false);
+
     function add(event) {
         const newDisplayValue = display + event.target.textContent;
         setDisplay(newDisplayValue);
     }
+
     function clear() {
         setDisplay('');
     }
-    return <>
 
-        <h1>Dialog screen</h1>
-        <b>{display}</b>
-        <Grid justifyContent='center'  container spacing={{ sm: 2 }} columns={{ sm: 3 }}>
+    return <Box sx={{p:2}}>
 
-            {numbers.map((number, i) => (
-                <Grid item sx='auto' sm={1} key={i}>
-                    <Avatar sx={{ height:55, width:55, bgcolor: blue[500], margin:'auto' }} onClick={add}>{number}</Avatar>
+        <Box sx={{
+            p: 2,
+            textAlign: 'center',
+            position: 'relative'
+        }}>
+            <Grid container
+                alignItems='center' columns={{ sm: 3 }}>
+                <Grid item sm={2} sx={{ textAlign: 'right' }}>
+                    <Typography>{display}</Typography>
                 </Grid>
-            ))}
+                <Grid item sm={1}>
+                    <BackspaceIcon
+                        onClick={clear}
+                        sx={{ cursor: 'pointer', color: grey[400] }} />
+                </Grid>
+            </Grid>
+        </Box>
+        <Box sx={{width: 200, margin: 'auto'}}>
+            <Grid container
+                justifyContent='center'
+                alignItems='center'
+                spacing={{ sm: 1 }}
+                columns={{ sm: 3 }}>
 
+                {numbers.map((number, i) => (
+                    <Grid item sm={1} key={i}>
+                        <Avatar sx={{ cursor: 'pointer', bgcolor: green[500], margin: 'auto' }}
+                            onClick={add}>
+                            {number}
+                        </Avatar>
+                    </Grid>
+                ))}
 
-        </Grid>
+                <Grid item sm={3} sx={{ textAlign: 'center' }}>
+                    <Button onClick={() => setIsCalling(true)}
+                        variant="contained"
+                        sx={{borderRadius:5, bgcolor: blue[500]}}>
+                            <PhoneInTalkIcon />
+                    </Button>
+                </Grid>
 
+            </Grid>
+        </Box>
 
-        <Button variant='contained' startIcon={<CallIcon />}> </Button>
+        <Modal
+            open={isCalling}
+            onClose={() => setIsCalling(false)}
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Paper sx={{ p: 2, width: 300, background: 'white' }}>
+                <Typography sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <PhoneInTalkIcon sx={{ mr: 2, color: blue[500] }} /> Calling {display}
+                </Typography>
+            </Paper>
+        </Modal>
 
-
-
-
-
-
-
-    </>
+    </Box>
 }
