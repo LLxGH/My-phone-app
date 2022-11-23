@@ -5,6 +5,7 @@ import axios from "axios";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import FormDialog from "./Dialog";
+import DeleteContact from "./DeleteContact";
 
 
 export default function Contact() {
@@ -52,6 +53,10 @@ export default function Contact() {
                         <ListItemText
                             primary={contact.name}
                             secondary={contact.phone} />
+                            <DeleteContact
+                            contacts={contacts}
+                            setContacts={setContacts}
+                            contactPos={i}/>
                     </ListItem>
                     <Divider variant="inset" component="li" />
                 </Box>
